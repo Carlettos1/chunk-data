@@ -11,11 +11,6 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-	// Add repositories to retrieve artifacts from in here.
-	// You should only use this when depending on other mods because
-	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
-	// for more information about repositories.
 }
 
 dependencies {
@@ -39,6 +34,7 @@ tasks.withType(JavaCompile).configureEach {
 
 java {
 	withSourcesJar()
+	withJavadocJar()
 }
 
 jar {
@@ -50,15 +46,40 @@ jar {
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
+		    groupId = "io.github.carlettos1"
+		    artifactId = "chunkdata"
+		    version = project.version
+		    
+            pom {
+              name = "Chunk Data Lib"
+              description = "Allows easy serialization of custom data to a chunk NBT"
+              url = "https://github.com/Carlettos1/chunk-data"
+              licenses {
+                  license {
+                    name = 'Creative Commons CC0 1.0 Universal'
+                    url = 'https://creativecommons.org/publicdomain/zero/1.0/legalcode'
+                  }
+              }
+              developers {
+                developer {
+                    name = "Carlettos"
+                    email = "carlettos.fem@gmail.com"
+                    organizationUrl = "https://carlettos1.github.io"
+                }
+              }
+              scm {
+                connection = "scm:git:git://github.com/Carlettos1/chunk-data.git"
+                developerConnection = 'scm:git:ssh://github.com:Carlettos1/chunk-data.git'
+                url = 'https://github.com/Carlettos1/chunk-data/tree/1.19'
+              }
+            }
 			from components.java
 		}
 	}
 
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
 	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
+		maven {
+		  url = layout.buildDirectory.dir("https://repo1.maven.org/maven2/io/github/carlettos1/chunkdata")
+		}
 	}
 }
